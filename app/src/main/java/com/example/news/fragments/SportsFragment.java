@@ -50,29 +50,25 @@ public class SportsFragment extends Fragment {
         binding.sportsFRv.setAdapter(adapter);
         binding.sportsFRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.sportsFRv.setHasFixedSize(true);
-        adapter.setListener(url -> {
-            requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url",url));
-        });
+        adapter.setListener(url -> requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url",url)));
         getNews();
-        MainActivity.newsViewModel.refreshNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
+        MainActivity.newsViewModel.refreshSportsNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
     }
 
     public void getNews(){
         binding.sportsFPb.setVisibility(View.VISIBLE);
         binding.sportsFRv.setVisibility(View.GONE);
-        MainActivity.newsViewModel.getCategoryNews(RetrofitBuilder.COUNTRY,category,100)
+        MainActivity.newsViewModel.getCategoryNews(MainActivity.sharedPreference.getString("country","us"),category,100)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result ->{
                     binding.sportsFPb.setVisibility(View.GONE);
                     binding.sportsFRv.setVisibility(View.VISIBLE);
                     adapter.setList(result.getArticles());
-                },error-> Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        MainActivity.newsViewModel.refreshNews().removeObservers(getViewLifecycleOwner());
+                },error->{
+                    binding.sportsFPb.setVisibility(View.GONE);
+                    binding.sportsFRv.setVisibility(View.VISIBLE);
+                    Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

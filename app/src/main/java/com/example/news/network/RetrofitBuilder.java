@@ -13,7 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitBuilder {
 
-    public static String COUNTRY="us";
     private static final String API_KEY="b017dd7ae7574ca1915e391a6bc3ae19";
     private static final String BASE_URL="https://newsapi.org/v2/";
     private static Retrofit instance;

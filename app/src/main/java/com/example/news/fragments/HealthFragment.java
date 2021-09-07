@@ -48,29 +48,25 @@ public class HealthFragment extends Fragment {
         binding.healthFRv.setAdapter(adapter);
         binding.healthFRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.healthFRv.setHasFixedSize(true);
-        adapter.setListener(url -> {
-            requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url", url));
-        });
+        adapter.setListener(url -> requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url", url)));
         getNews();
-        MainActivity.newsViewModel.refreshNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
+        MainActivity.newsViewModel.refreshHealthNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
     }
 
     public void getNews() {
         binding.healthFPb.setVisibility(View.VISIBLE);
         binding.healthFRv.setVisibility(View.GONE);
-        MainActivity.newsViewModel.getCategoryNews(RetrofitBuilder.COUNTRY, category, 100)
+        MainActivity.newsViewModel.getCategoryNews(MainActivity.sharedPreference.getString("country","us"), category, 100)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     binding.healthFPb.setVisibility(View.GONE);
                     binding.healthFRv.setVisibility(View.VISIBLE);
                     adapter.setList(result.getArticles());
-                },error-> Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        MainActivity.newsViewModel.refreshNews().removeObservers(getViewLifecycleOwner());
+                },error->{
+                    binding.healthFPb.setVisibility(View.GONE);
+                    binding.healthFRv.setVisibility(View.VISIBLE);
+                    Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

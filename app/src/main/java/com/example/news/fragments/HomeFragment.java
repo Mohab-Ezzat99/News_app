@@ -21,6 +21,7 @@ import com.example.news.network.NewsAPIService;
 import com.example.news.network.RetrofitBuilder;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeFragment extends Fragment {
@@ -48,29 +49,25 @@ public class HomeFragment extends Fragment {
         binding.homeFRv.setAdapter(adapter);
         binding.homeFRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.homeFRv.setHasFixedSize(true);
-        adapter.setListener(url -> {
-            requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url", url));
-        });
+        adapter.setListener(url -> requireActivity().startActivity(new Intent(requireContext(), WebViewActivity.class).putExtra("url", url)));
         getNews();
-        MainActivity.newsViewModel.refreshNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
+        MainActivity.newsViewModel.refreshHomeNews().observe(getViewLifecycleOwner(), aBoolean -> getNews());
     }
 
     public void getNews() {
         binding.homeFPb.setVisibility(View.VISIBLE);
         binding.homeFRv.setVisibility(View.GONE);
-        MainActivity.newsViewModel.getNews(RetrofitBuilder.COUNTRY, 100)
+        MainActivity.newsViewModel.getNews(MainActivity.sharedPreference.getString("country","us"), 100)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     binding.homeFPb.setVisibility(View.GONE);
                     binding.homeFRv.setVisibility(View.VISIBLE);
                     adapter.setList(result.getArticles());
-                },error-> Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        MainActivity.newsViewModel.refreshNews().removeObservers(getViewLifecycleOwner());
+                },error->{
+                    binding.homeFPb.setVisibility(View.GONE);
+                    binding.homeFRv.setVisibility(View.VISIBLE);
+                    Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

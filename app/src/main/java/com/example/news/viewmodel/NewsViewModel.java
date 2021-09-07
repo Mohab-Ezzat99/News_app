@@ -9,11 +9,17 @@ import com.example.news.model.MainNewsModel;
 import com.example.news.repository.Repository;
 
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class NewsViewModel extends AndroidViewModel {
 
-    private Repository repository;
-    private MutableLiveData<Boolean> mutableLiveData = new MutableLiveData<>();
+    private final Repository repository;
+    private final MutableLiveData<Boolean> mlHomeNews = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mlSportsNews = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mlHealthNews = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mlScienceNews = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mlEntertainmentNews = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mlTechnologyNews = new MutableLiveData<>();
 
     public NewsViewModel(@NonNull Application application) {
         super(application);
@@ -28,8 +34,33 @@ public class NewsViewModel extends AndroidViewModel {
         return repository.getCategoryNews(country,category,pageSize);
     }
 
-    public MutableLiveData<Boolean> refreshNews(){
-        mutableLiveData.setValue(true);
-        return mutableLiveData;
+    public MutableLiveData<Boolean> refreshHomeNews(){
+        mlHomeNews.setValue(true);
+        return mlHomeNews;
+    }
+
+    public MutableLiveData<Boolean> refreshSportsNews(){
+        mlSportsNews.setValue(true);
+        return mlSportsNews;
+    }
+
+    public MutableLiveData<Boolean> refreshHealthNews(){
+        mlHealthNews.setValue(true);
+        return mlHealthNews;
+    }
+
+    public MutableLiveData<Boolean> refreshScienceNews(){
+        mlScienceNews.setValue(true);
+        return mlScienceNews;
+    }
+
+    public MutableLiveData<Boolean> refreshEntertainmentNews(){
+        mlEntertainmentNews.setValue(true);
+        return mlEntertainmentNews;
+    }
+
+    public MutableLiveData<Boolean> refreshTechnologyNews(){
+        mlTechnologyNews.setValue(true);
+        return mlTechnologyNews;
     }
 }
