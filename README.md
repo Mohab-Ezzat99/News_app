@@ -1,5 +1,5 @@
 # News_app
-News app allows the user to follow latest news of USA,Egypt and India in sections sports,health,science,entertainment & technologies.
+News app allows the user to follow latest news of USA,Egypt and India in sections Sports ,Health ,Science ,Entertainment &Technologies.
 
 # Tools
 
