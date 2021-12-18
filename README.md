@@ -3,21 +3,21 @@ News app allows the user to follow latest news of USA,Egypt and India in section
 
 # Tools
 
-View binding
-
-Material design
+Java, MVVM & Material design
 
 Intuit library for supporting multi-screens
 
-MVVM
-
-REST API (Retrofit2)
-
-RXJava
+Android Jetpack (LiveData, ViewModel & DataBinding)
+ 
+3rd Party Libraries (Retrofit “REST API” , Glide & RXJava)
 
 # APK
 
 https://drive.google.com/file/d/1nDqW4Fk8Pe0Fpcsxrc-VhILpvKEjhX93/view?usp=sharing
+
+# YouTube
+
+https://www.youtube.com/watch?v=kcZj0zmKjB8
 
 # Screenshots
 
