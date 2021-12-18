@@ -3,7 +3,7 @@ News app allows the user to follow latest news of USA,Egypt and India in section
 
 # Tools
 
-Java, MVVM & Material design
+Java & Material design
 
 Intuit library for supporting multi-screens
 
